@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onion Market Management System</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+}
+
+.header{
+    background:#2e7d32;
+    color:white;
+    padding:20px;
+    text-align:center;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.form-section{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-section h2{
+    color:#2e7d32;
+    margin-bottom:15px;
+    border-bottom:2px solid #ddd;
+    padding-bottom:10px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input, select, textarea{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+textarea{
+    resize:vertical;
+}
+
+button{
+    background:#2e7d32;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:5px;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+button:hover{
+    background:#1b5e20;
+}
+
+.weight-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+    margin-top:15px;
+}
+
+.summary{
+    margin-top:20px;
+    background:#f8f8f8;
+    padding:15px;
+    border-radius:8px;
+}
+
+.summary input{
+    background:#fff;
+}
+
+.readonly{
+    background:#e9ecef;
+}
+
+@media(max-width:768px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>🧅 Onion Market Management System</h1>
+        <p>Farmer • Purchaser • Admin</p>
+    </div>
+
+    <!-- Farmer Form -->
+    <div class="form-section">
+        <h2>Farmer Entry</h2>
+
+        <div class="grid">
+
+            <div class="form-group">
+                <label>Farmer Name</label>
+                <input type="text">
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel">
+            </div>
+
+            <div class="form-group">
+                <label>Village / Address</label>
+                <input type="text">
+            </div>
+
+            <div class="form-group">
+                <label>Vehicle Number</label>
+                <input type="text">
+            </div>
+
+            <div class="form-group">
+                <label>Vehicle Type</label>
+                <select>
+                    <option>Tractor</option>
+                    <option>Pickup</option>
+                    <option>Tempo</option>
+                    <option>Truck</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Number of Bags</label>
+                <input type="number">
+            </div>
+
+            <div class="form-group">
+                <label>Declared Weight (Kg)</label>
+                <input type="number">
+            </div>
+
+            <div class="form-group">
+                <label>Onion Grade</label>
+                <select>
+                    <option>A Grade</option>
+                    <option>B Grade</option>
+                    <option>C Grade</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Arrival Date</label>
+                <input type="date">
+            </div>
+
+        </div>
+
+        <div class="form-group" style="margin-top:15px;">
+            <label>Remarks</label>
+            <textarea rows="3"></textarea>
+        </div>
+
+        <button>Save Farmer</button>
+    </div>
+
+    <!-- Purchaser Form -->
+    <div class="form-section">
+
+        <h2>Purchaser (Vyapari) Entry</h2>
+
+        <div class="grid">
+
+            <div class="form-group">
+                <label>Purchaser Name</label>
+                <input type="text">
+            </div>
+
+            <div class="form-group">
+                <label>Mobile Number</label>
+                <input type="tel">
+            </div>
+
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text">
+            </div>
+
+            <div class="form-group">
+                <label>Nag Count</label>
+                <input type="number" id="nagCount" min="1">
+            </div>
+
+        </div>
+
+        <div id="weightFields" class="weight-container"></div>
+
+        <div class="summary">
+
+            <div class="grid">
+
+                <div class="form-group">
+                    <label>Total Weight (Kg)</label>
+                    <input type="number" id="totalWeight" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Rate Per Kg (₹)</label>
+                    <input type="number" id="rate">
+                </div>
+
+                <div class="form-group">
+                    <label>Gross Amount (₹)</label>
+                    <input type="number" id="grossAmount" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Commission Per Kg (₹)</label>
+                    <input type="number" id="commissionPerKg">
+                </div>
+
+                <div class="form-group">
+                    <label>Commission Amount (₹)</label>
+                    <input type="number" id="commissionAmount" class="readonly" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label>Final Amount (₹)</label>
+                    <input type="number" id="finalAmount" class="readonly" readonly>
+                </div>
+
+            </div>
+
+        </div>
+
+        <button>Save Purchase</button>
+
+    </div>
+
+</div>
+
+<script>
+
+const nagCount = document.getElementById("nagCount");
+const weightFields = document.getElementById("weightFields");
+
+const totalWeightInput = document.getElementById("totalWeight");
+const rateInput = document.getElementById("rate");
+const grossAmountInput = document.getElementById("grossAmount");
+const commissionPerKgInput = document.getElementById("commissionPerKg");
+const commissionAmountInput = document.getElementById("commissionAmount");
+const finalAmountInput = document.getElementById("finalAmount");
+
+nagCount.addEventListener("input", generateWeightFields);
+
+function generateWeightFields() {
+
+    weightFields.innerHTML = "";
+
+    let count = parseInt(nagCount.value) || 0;
+
+    for(let i=1;i<=count;i++){
+
+        const div = document.createElement("div");
+        div.classList.add("form-group");
+
+        div.innerHTML = `
+            <label>Weight ${i} (Kg)</label>
+            <input type="number" class="weight-input" min="0">
+        `;
+
+        weightFields.appendChild(div);
+    }
+
+    attachWeightListeners();
+}
+
+function attachWeightListeners(){
+
+    document.querySelectorAll(".weight-input").forEach(input=>{
+        input.addEventListener("input", calculateTotals);
+    });
+}
+
+rateInput.addEventListener("input", calculateTotals);
+commissionPerKgInput.addEventListener("input", calculateTotals);
+
+function calculateTotals(){
+
+    let totalWeight = 0;
+
+    document.querySelectorAll(".weight-input").forEach(input=>{
+        totalWeight += Number(input.value) || 0;
+    });
+
+    totalWeightInput.value = totalWeight;
+
+    let rate = Number(rateInput.value) || 0;
+
+    let grossAmount = totalWeight * rate;
+
+    grossAmountInput.value = grossAmount.toFixed(2);
+
+    let commissionPerKg = Number(commissionPerKgInput.value) || 0;
+
+    let commissionAmount = totalWeight * commissionPerKg;
+
+    commissionAmountInput.value = commissionAmount.toFixed(2);
+
+    let finalAmount = grossAmount - commissionAmount;
+
+    finalAmountInput.value = finalAmount.toFixed(2);
+}
+
+</script>
+
+</body>
+</html>
